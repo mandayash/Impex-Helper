@@ -3,20 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comodify</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Comodity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ asset('aset/logo-zoom.png') }}">
+    @vite('resources/css/app.css')
+    {{-- @vite('resources/css/home.css') --}}
   </head>
   <body class="bg-slate-50">
     <!-- Header -->
     <button
       class="mt-6 ml-20 bg-blue-500 text-white px-6 rounded hover:bg-blue-600"
     >
-      <a href="{{ route('home') }}" class="text-white font-bold text-3xl">&larr;</a>
+      <a href="{{ route('home1') }}" class="text-white font-bold text-3xl">&larr;</a>
     </button>
     <!-- Main Content -->
     <main class="flex flex-col items-center mt-10 px-4">
       <!-- Title -->
-      <h1 class="text-blue-500 text-4xl font-bold">Comodify</h1>
+      <h1 class="text-blue-500 text-4xl font-bold">Comodity</h1>
 
       <!-- Subtitle -->
       <p class="text-gray-700 text-center mt-4 max-w-lg">

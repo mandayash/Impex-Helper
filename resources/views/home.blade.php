@@ -3,26 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Layout Dua Div</title>
+    <title>Impex Helper</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="{{ asset('aset/logo-zoom.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @vite('resources/css/app.css')
+    @vite('resources/css/home.css')
   </head>
 
   <body class="font-sans m-0 p-0">
     <nav
       class="absolute top-0 left-0 w-full flex justify-evenly gap-[300px] items-center z-50 bg-transparent mt-2"
     >
-      <div class="mr-8">
-        <h1 class="text-2xl font-bold">KOCAKS</h1>
-      </div>
+    <div class="mr-8">
+        <img src="{{ asset('aset/logo.png') }}"alt="Impex Helper Logo" class="h-10">
+    </div>
       <ul class="flex gap-5 list-none m-0">
         <li class="ml-8">
-          <a href="#" class="text-blue-500 text-lg font-bold"
+          <a href="{{ route('regulation') }}" class="text-blue-500 text-lg font-bold"
             >Export Import Regulation</a
           >
         </li>
         <li class="ml-8">
-          <a href="{{ route('commodity') }}" class="text-blue-500 text-lg font-bold">Comudity</a>
+          <a href="{{ route('commodity') }}" class="text-blue-500 text-lg font-bold">Commodity</a>
         </li>
         <li class="ml-8">
           <a href="#" class="text-blue-500 text-lg font-bold login-btn"
@@ -31,7 +34,7 @@
         </li>
         <li class="ml-8">
           <a
-            href="#"
+            href="{{ route('signup') }}"
             class="bg-blue-500 text-white py-2 px-4 rounded transition-colors hover:bg-transparent hover:text-blue-500 font-bold text-lg"
             >Sign Up</a
           >
@@ -64,10 +67,8 @@
             <span class="text-orange-500">Future</span>
           </h1>
           <p class="text-lg text-gray-600 leading-relaxed">
-            dolorum suscipit vel optio nam illum vero! Laboriosam ab iusto sint
-            odio ipsam id necessitatibus optio quis! Quas ullam provident
-            exercitationem nemo, sunt eos necessitatibus est voluptate libero
-            sequi soluta optio.
+            Impex Helper streamlines export-import in ASEAN, connecting buyers and sellers in commodity
+            trade while ensuring compliance with regional export regulations.
           </p>
           <div class="button-container mt-5">
             <button
@@ -230,7 +231,7 @@
     </div>
 
     <div class="mt-20 ml-32 pl-2 border-l-4 border-black">
-        <h1 class="font-bold text-lg">Agriculture &  Plantation Comodity</h1>
+        <h1 class="font-bold text-lg">Processed Food & Beverages Comodity</h1>
     </div>
     <div
       class="card-section p-5 flex overflow-hidden w-4/5 mx-auto user-select-none"
@@ -378,7 +379,7 @@
     </div>
 
     <div class="mt-20 ml-32 pl-2 border-l-4 border-black">
-        <h1 class="font-bold text-lg">Agriculture &  Plantation Comodity</h1>
+        <h1 class="font-bold text-lg">Fisheries & Marine Products Comodity</h1>
     </div>
     <div
       class="card-section p-5 flex overflow-hidden w-4/5 mx-auto user-select-none"
@@ -526,7 +527,7 @@
     </div>
 
     <div class="mt-20 ml-32 pl-2 border-l-4 border-black">
-        <h1 class="font-bold text-lg">Agriculture &  Plantation Comodity</h1>
+        <h1 class="font-bold text-lg">Wood & Furniture Comodity</h1>
     </div>
     <div
       class="card-section p-5 flex overflow-hidden w-4/5 mx-auto user-select-none"
@@ -714,7 +715,7 @@
           <p>© 2024 Impex Helper by Group 3 | All Rights Reserved</p>
         </div>
       </footer>
-      
+
 
     <script src="{{ asset('js/script.js') }}"></script>
   </body>
