@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'country',
+        'place_of_birth',
+        'birth_date',
+        'phone_number',
+        'role'
     ];
 
     /**
@@ -38,11 +43,17 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
+
+    public function sellerProfile()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(SellerProfile::class);
+    }
+
+    public function isSeller()
+    {
+        return $this->role === 'seller';
     }
 }

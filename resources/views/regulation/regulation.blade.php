@@ -29,7 +29,7 @@
                 <img src="{{ asset('aset/malaysia.png') }}" alt="Malaysia flag" class="country-flag">
                 <h3>Malaysia</h3>
                 <p>Malaysia exports palm oil, rubber, and electrical machinery from Indonesia</p>
-                <a href="{{ route('malaysia') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.malaysia') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Singapore -->
@@ -37,7 +37,7 @@
                 <img src="{{ asset('aset/singapore.png') }}" alt="Singapore flag" class="country-flag">
                 <h3>Singapore</h3>
                 <p>Singapore imports electronics, machinery, and refined petroleum products from Indonesia</p>
-                <a href="{{ route('singapura') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.singapura') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Thailand -->
@@ -45,7 +45,7 @@
                 <img src="{{ asset('aset/thailand.png') }}" alt="Thailand flag" class="country-flag">
                 <h3>Thailand</h3>
                 <p>Thailand imports automotive parts, electronics, and agricultural products like rice from Indonesia</p>
-                <a href="{{ route('thailand') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.thailand') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Cambodia -->
@@ -53,7 +53,7 @@
                 <img src="{{ asset('aset/kamboja.png') }}" alt="Cambodia flag" class="country-flag">
                 <h3>Cambodia</h3>
                 <p>Cambodia imports textiles, footwear, and agricultural products such as rice and rubber from Indonesia</p>
-                <a href="{{ route('kamboja') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.kamboja') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Myanmar -->
@@ -61,7 +61,7 @@
                 <img src="{{ asset('aset/myanmar.png') }}" alt="Myanmar flag" class="country-flag">
                 <h3>Myanmar</h3>
                 <p>Myanmar imports agricultural products, especially rice and beans, and mineral resources from Indonesia</p>
-                <a href="{{ route('myanmar') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.myanmar') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Laos -->
@@ -69,7 +69,7 @@
                 <img src="{{ asset('aset/laos.png') }}" alt="Laos mining" class="country-image">
                 <h3>Laos</h3>
                 <p>Laos imports coffee, rubber, and mineral resources from Indonesia.</p>
-                <a href="{{ route('laos') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.laos') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Phillipines -->
@@ -77,7 +77,8 @@
                 <img src="{{ asset('aset/filipina.png') }}" alt="Laos mining" class="country-image">
                 <h3>Philippines</h3>
                 <p>The Philippines imports electronic components, copper, and coconut products from Indonesia.</p>
-                <a href="{{ route('filipina') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.filipina') }}" class="read-more">Read more</a>
+
             </div>
 
             <!-- Brunei Darussalam -->
@@ -85,7 +86,7 @@
                 <img src="{{ asset('aset/brunei.png') }}" alt="Laos mining" class="country-image">
                 <h3>Brunei Darussalam</h3>
                 <p>Brunei imports crude oil, natural gas, and petroleum products from Indonesia.</p>
-                <a href="{{ route('brunei') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.brunei') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Vietnam -->
@@ -93,7 +94,7 @@
                 <img src="{{ asset('aset/vietnam.png') }}" alt="Laos mining" class="country-image">
                 <h3>Vietnam</h3>
                 <p>Vietnam imports coffee, seafood, and textiles from Indonesia.</p>
-                <a href="{{ route('vietnam') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.vietnam') }}" class="read-more">Read more</a>
             </div>
 
             <!-- Timor Leste -->
@@ -101,7 +102,7 @@
                 <img src="{{ asset('aset/timor.png') }}" alt="Laos mining" class="country-image">
                 <h3>Timor Leste</h3>
                 <p>Timor-Leste imports coffee, rice, and various food products from Indonesia.</p>
-                <a href="{{ route('timorleste') }}" class="read-more">Read more</a>
+                <a href="{{ route('regulation.countries.timorleste') }}" class="read-more">Read more</a>
             </div>
         </div>
 
@@ -111,3 +112,8 @@
     @include('partial.footer')
 </body>
 </html>
+
+
+
+
+

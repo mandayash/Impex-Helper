@@ -12,7 +12,7 @@
       <div class="footer-section">
         <h3 class="footer-heading">Navigate Link</h3>
         <ul class="footer-links">
-            <li><a href="{{ route('home1') }}" class="footer-link">Home</a></li>
+            <li><a href="{{ route('home') }}" class="footer-link">Home</a></li>
             <li><a href="{{ route('regulation') }}" class="footer-link">Regulation Info</a></li>
             <li><a href="{{ route('commodity') }}" class="footer-link">Commodity</a></li>
         </ul>
