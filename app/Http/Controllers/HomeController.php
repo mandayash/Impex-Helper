@@ -14,6 +14,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        \Log::info('Auth Status:', ['is_authenticated' => Auth::check()]);
+        if (Auth::check()) {
+        \Log::info('User Role:', ['role' => Auth::user()->role]);
 
         // Jika user sudah login
         if (Auth::check()) {
@@ -36,6 +39,8 @@ class HomeController extends Controller
         // Jika guest (belum login)
         return view('home.guest');
     }
+
+}
 
 
     /**

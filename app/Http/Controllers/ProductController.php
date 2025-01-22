@@ -13,7 +13,15 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('seller.products.create');
+        $user = Auth::user();
+
+    // Cek apakah seller sudah punya profile
+    if (!$user->sellerProfile) {
+        return redirect()->route('seller.complete-profile')
+            ->with('error', 'Please complete your profile first');
+    }
+
+    return view('seller.products.create');
     }
 
     /**
@@ -26,7 +34,9 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'commodity_type' => 'required|array',  // Tambahkan validasi
+            'commodity_type.*' => 'string'         // Validasi setiap item array
         ]);
 
         $imagePath = null;
@@ -34,13 +44,15 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('product-images', 'public');
         }
 
+        $commodityType = implode(', ', $request->commodity_type);
         $product = Product::create([
             'seller_id' => Auth::user()->sellerProfile->id,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
-            'image' => $imagePath
+            'image' => $imagePath,
+            'commodity_type' => $commodityType
         ]);
 
         return redirect()->route('seller.store')

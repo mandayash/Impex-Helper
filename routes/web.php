@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 
 // Home page untuk semua pengunjung (guest dan authenticated users)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Tambahkan route untuk /home yang mengarah ke controller yang sama
+Route::get('/home', [HomeController::class, 'index']);
 
 // Authentication Routes
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -99,34 +101,35 @@ Route::get('/commodity', function () {
 })->name('commodity');
 
 
-// // Seller routes yang perlu authentication dan middleware seller
-// Route::middleware(['auth', 'seller'])->group(function () {
-//     // Profile routes
-//     Route::get('/seller/complete-profile', [SellerController::class, 'showProfileForm'])
-//         ->name('seller.complete-profile');
-//     Route::post('/seller/complete-profile', [SellerController::class, 'completeProfile']);
+// Seller routes
+Route::middleware('auth')->group(function () {
+    Route::middleware('seller')->prefix('seller')->group(function () {
+        // Complete profile routes
+        Route::get('/complete-profile', [SellerController::class, 'showProfileForm'])
+            ->name('seller.complete-profile');
+        Route::post('/complete-profile', [SellerController::class, 'completeProfile']);
 
-//     // Dashboard route
-//     Route::get('/seller/dashboard', [SellerController::class, 'dashboard'])
-//         ->name('seller.dashboard');
+        // Product routes
+        Route::prefix('products')->group(function () {
+            Route::get('/create', [ProductController::class, 'create'])
+                ->name('seller.products.create');
+            Route::post('/', [ProductController::class, 'store'])
+                ->name('seller.products.store');
+            Route::get('/{product}/edit', [ProductController::class, 'edit'])
+                ->name('seller.products.edit');
+            Route::put('/{product}', [ProductController::class, 'update'])
+                ->name('seller.products.update');
+            Route::delete('/{product}', [ProductController::class, 'destroy'])
+                ->name('seller.products.destroy');
+        });
 
-//     // Store route
-//     Route::get('/seller/store', [SellerController::class, 'store'])
-//         ->name('seller.store');
-
-//     Route::prefix('seller/products')->group(function () {
-//         Route::get('/create', [ProductController::class, 'create'])
-//             ->name('seller.products.create');
-//         Route::post('/', [ProductController::class, 'store'])
-//             ->name('seller.products.store');
-//         Route::get('/{product}/edit', [ProductController::class, 'edit'])
-//             ->name('seller.products.edit');
-//         Route::put('/{product}', [ProductController::class, 'update'])
-//             ->name('seller.products.update');
-//         Route::delete('/{product}', [ProductController::class, 'destroy'])
-//             ->name('seller.products.destroy');
-//     });
-// });
+        // Profile dan Store routes
+        Route::get('/profile', [SellerController::class, 'profile'])
+            ->name('profile.show');
+        Route::get('/store', [SellerController::class, 'store'])
+            ->name('seller.store');
+    });
+});
 
 
 
