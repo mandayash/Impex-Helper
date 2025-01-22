@@ -8,132 +8,71 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProductController;
 
-// Home page untuk semua pengunjung (guest dan authenticated users)
+// Home Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Tambahkan route untuk /home yang mengarah ke controller yang sama
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('/home', [HomeController::class, 'index']);  // Redirect alternatif ke home
 
-// Authentication Routes
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-// Registration Routes
-Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
-
-// Guest Routes (hanya bisa diakses jika belum login)
+// Authentication Routes - Dikelompokkan untuk kejelasan
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
+    // Login Routes
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
+
+    // Register Routes - Tidak perlu didefinisikan dua kali
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
 });
 
-// Public Routes (bisa diakses semua)
+// Logout Route - Harus dapat diakses oleh authenticated users
+Route::post('logout', [LoginController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
+
+// Public Information Routes
 Route::get('/regulation', function () {
     return view('regulation.regulation');
 })->name('regulation');
 
-// Regulasi setiap negara
-Route::get('/regulation/countries/filipina', function () {
-    return view('regulation.countries.filipina');
-})->name('regulation.countries.filipina');
+// Route untuk regulasi per negara
+$countries = [
+    'filipina', 'thailand', 'vietnam', 'myanmar',
+    'singapura', 'malaysia', 'laos', 'kamboja',
+    'brunei', 'timorleste'
+];
 
-Route::get('/regulation/countries/thailand', function () {
-    return view('regulation.countries.thailand');
-})->name('regulation.countries.thailand');
+foreach ($countries as $country) {
+    Route::get("/regulation/countries/{$country}", function () use ($country) {
+        return view("regulation.countries.{$country}");
+    })->name("regulation.countries.{$country}");
+}
 
-Route::get('/regulation/countries/vietnam', function () {
-    return view('regulation.countries.vietnam');
-})->name('regulation.countries.vietnam');
-
-Route::get('/regulation/countries/myanmar', function () {
-    return view('regulation.countries.myanmar');
-})->name('regulation.countries.myanmar');
-
-Route::get('/regulation/countries/singapura', function () {
-    return view('regulation.countries.singapura');
-})->name('regulation.countries.singapura');
-
-Route::get('/regulation/countries/malaysia', function () {
-    return view('regulation.countries.malaysia');
-})->name('regulation.countries.malaysia');
-
-Route::get('/regulation/countries/laos', function () {
-    return view('regulation.countries.laos');
-})->name('regulation.countries.laos');
-
-Route::get('/regulation/countries/kamboja', function () {
-    return view('regulation.countries.kamboja');
-})->name('regulation.countries.kamboja');
-
-Route::get('/regulation/countries/brunei', function () {
-    return view('regulation.countries.brunei');
-})->name('regulation.countries.brunei');
-
-Route::get('/regulation/countries/timorleste', function () {
-    return view('regulation.countries.timorleste');
-})->name('regulation.countries.timorleste');
-
-
-// Tambahkan group middleware untuk seller
-Route::middleware(['auth', 'seller'])->group(function () {
-    // Complete profile routes
-    Route::get('/seller/complete-profile', [SellerController::class, 'showProfileForm'])
-        ->name('seller.complete-profile');
-    Route::post('/seller/complete-profile', [SellerController::class, 'completeProfile']);
-
-    // Product routes (untuk upload product)
-    Route::get('/seller/products/create', [ProductController::class, 'create'])
-        ->name('seller.products.create');
-    Route::post('/seller/products', [ProductController::class, 'store'])
-        ->name('seller.products.store');
-
-    // Profile routes
-    Route::get('/seller/profile', [SellerController::class, 'profile'])->name('profile.show');
-
-    // Store routes
-    Route::get('/seller/store', [SellerController::class, 'store'])->name('seller.store');
-});
-
-// Route untuk halaman commodity
+// Commodity Route
 Route::get('/commodity', function () {
     return view('commodity');
 })->name('commodity');
 
+// Seller Routes - Dengan middleware auth dan checkseller
+Route::middleware(['auth', 'checkseller'])->group(function () {
+    // Define the complete-profile route at the top level of seller routes
+    Route::get('/seller/complete-profile', [SellerController::class, 'showProfileForm'])
+        ->name('seller.complete-profile');
+    Route::post('/seller/complete-profile', [SellerController::class, 'completeProfile'])
+        ->name('seller.complete-profile.save');
 
-// Seller routes
-Route::middleware('auth')->group(function () {
-    Route::middleware('seller')->prefix('seller')->group(function () {
-        // Complete profile routes
-        Route::get('/complete-profile', [SellerController::class, 'showProfileForm'])
-            ->name('seller.complete-profile');
-        Route::post('/complete-profile', [SellerController::class, 'completeProfile']);
+    // Profile route that we fixed earlier
+    Route::get('/seller/profile', [SellerController::class, 'profile'])
+        ->name('profile.show');
 
-        // Product routes
-        Route::prefix('products')->group(function () {
-            Route::get('/create', [ProductController::class, 'create'])
-                ->name('seller.products.create');
-            Route::post('/', [ProductController::class, 'store'])
-                ->name('seller.products.store');
-            Route::get('/{product}/edit', [ProductController::class, 'edit'])
-                ->name('seller.products.edit');
-            Route::put('/{product}', [ProductController::class, 'update'])
-                ->name('seller.products.update');
-            Route::delete('/{product}', [ProductController::class, 'destroy'])
-                ->name('seller.products.destroy');
-        });
+    // Store route
+    Route::get('/seller/store', [SellerController::class, 'store'])
+        ->name('seller.store');
 
-        // Profile dan Store routes
-        Route::get('/profile', [SellerController::class, 'profile'])
-            ->name('profile.show');
-        Route::get('/store', [SellerController::class, 'store'])
-            ->name('seller.store');
+    // Product routes grouped together
+    Route::prefix('seller/products')->name('seller.products.')->group(function () {
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
+        Route::put('/{product}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
     });
 });
-
-
-
-
-
-
-
