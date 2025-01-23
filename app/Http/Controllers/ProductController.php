@@ -5,59 +5,88 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
-    /**
-     * Show the form for creating a new product.
-     */
-    public function create()
-    {
-        $user = Auth::user();
 
-    // Cek apakah seller sudah punya profile
+    public function create()
+{
+    $user = Auth::user();
+
+    // Check if seller has a profile
     if (!$user->sellerProfile) {
         return redirect()->route('seller.complete-profile')
             ->with('error', 'Please complete your profile first');
     }
 
-    return view('seller.products.create');
-    }
+    $sellerProfile = $user->sellerProfile;
+    return view('seller.products.create', compact('sellerProfile'));
+}
 
     /**
      * Store a newly created product in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'commodity_type' => 'required|array',  // Tambahkan validasi
-            'commodity_type.*' => 'string'         // Validasi setiap item array
+        // dd($request->all());
+        // dd('Store method called', $request->all());
+
+        Log::info('Attempting to store product', [
+            'request_method' => $request->method(),
+            'request_url' => $request->url(),
+            'input' => $request->all()
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('product-images', 'public');
-        }
 
-        $commodityType = implode(', ', $request->commodity_type);
-        $product = Product::create([
-            'seller_id' => Auth::user()->sellerProfile->id,
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'image' => $imagePath,
-            'commodity_type' => $commodityType
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'commodity_type' => 'required|string'
+            ]);
 
-        return redirect()->route('seller.store')
+            Log::info('Validation passed');
+
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('product-images', 'public');
+                Log::info('Image stored at: ' . $imagePath);
+            }
+
+            $seller = Auth::user()->sellerProfile;
+            Log::info('Seller found', ['seller_id' => $seller->id]);
+
+            $product = Product::create([
+                'seller_id' => $seller->id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'image' => $imagePath,
+                'commodity_type' => $request->commodity_type
+            ]);
+
+            Log::info('Product created', ['product_id' => $product->id]);
+
+            return redirect()->route('seller.store')
             ->with('success', 'Product created successfully');
+
+    } catch (\Exception $e) {
+        Log::error('Failed to create product', [
+            'error' => $e->getMessage(),
+            'stack_trace' => $e->getTraceAsString()
+        ]);
+
+        return redirect()->back()
+            ->with('error', 'Failed to create product: ' . $e->getMessage())
+            ->withInput();
     }
+    }
+
 
     /**
      * Show the form for editing the specified product.

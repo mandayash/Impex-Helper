@@ -64,7 +64,33 @@
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-@push('styles')
-    @vite(['resources/css/home.css'])
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-@endpush
+<style>
+    /* Tambahkan CSS ini untuk memperbaiki tampilan form logout dalam dropdown */
+    .dropdown-item-form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .dropdown-item-form button {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .dropdown-item-form button:hover {
+        background-color: #f8f9fa;
+        color: #DE854F;
+    }
+
+    /* Perbaikan untuk dropdown toggle */
+    .dropdown-toggle {
+        cursor: pointer;
+    }
+
+    /* Memastikan dropdown menu muncul di atas elemen lain */
+    .dropdown-menu {
+        z-index: 1000;
+    }
+    </style>

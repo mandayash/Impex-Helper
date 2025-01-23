@@ -53,13 +53,13 @@ Route::get('/commodity', function () {
 
 // Seller Routes - Dengan middleware auth dan checkseller
 Route::middleware(['auth', 'checkseller'])->group(function () {
-    // Define the complete-profile route at the top level of seller routes
+    // Complete profile routes
     Route::get('/seller/complete-profile', [SellerController::class, 'showProfileForm'])
         ->name('seller.complete-profile');
     Route::post('/seller/complete-profile', [SellerController::class, 'completeProfile'])
         ->name('seller.complete-profile.save');
 
-    // Profile route that we fixed earlier
+    // Profile route
     Route::get('/seller/profile', [SellerController::class, 'profile'])
         ->name('profile.show');
 
@@ -76,3 +76,4 @@ Route::middleware(['auth', 'checkseller'])->group(function () {
         Route::delete('/{product}', [ProductController::class, 'destroy'])->name('destroy');
     });
 });
+

@@ -1,67 +1,54 @@
-<!-- resources/views/seller/complete-profile.blade.php -->
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Complete Seller Profile') }}</div>
+<div class="seller-form-container">
+    <a href="{{ url()->previous() }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('seller.complete-profile') }}" enctype="multipart/form-data">
-                        @csrf
+    <div class="seller-form-card">
+        <div class="seller-form-header">
+            <h1>Seller Detail</h1>
+            <p>Manage your store information to start selling.</p>
+        </div>
 
-                        <div class="form-group row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">{{ __('Shop Name') }}</label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control @error('shop_name') is-invalid @enderror"
-                                       name="shop_name" value="{{ old('shop_name', $sellerProfile->shop_name ?? '') }}" required>
-                                @error('shop_name')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+        <form method="POST" action="{{ route('seller.complete-profile.save') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="seller-form-content">
+                <div class="profile-picture-section">
+                    <h3>Profile Picture</h3>
+                    <div class="profile-picture-container">
+                        @if(isset($sellerProfile) && $sellerProfile->shop_photo)
+                            <img src="{{ Storage::url($sellerProfile->shop_photo) }}" alt="Shop Photo" class="profile-picture">
+                        @else
+                            <img src="{{ asset('aset/default-profile.png') }}" alt="Default Profile" class="profile-picture">
+                        @endif
+                    </div>
+                    <input type="file" name="shop_photo" id="shop_photo" hidden>
+                    <label for="shop_photo" class="add-picture-btn">Add Picture</label>
+                </div>
 
-                        <div class="form-group row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
-                            <div class="col-md-6">
-                                <textarea class="form-control @error('description') is-invalid @enderror"
-                                          name="description" rows="4" required>{{ old('description', $sellerProfile->description ?? '') }}</textarea>
-                                @error('description')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                <div class="form-fields">
+                    <div class="form-group">
+                        <label for="shop_name">Shop name</label>
+                        <input type="text" id="shop_name" name="shop_name"
+                               value="{{ old('shop_name') ?? ($sellerProfile->shop_name ?? '') }}" required>
+                    </div>
 
-                        <div class="form-group row mb-3">
-                            <label class="col-md-4 col-form-label text-md-end">{{ __('Shop Photo') }}</label>
-                            <div class="col-md-6">
-                                <input type="file" class="form-control @error('shop_photo') is-invalid @enderror"
-                                       name="shop_photo">
-                                @error('shop_photo')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                                @if($sellerProfile && $sellerProfile->shop_photo)
-                                    <div class="mt-2">
-                                        <img src="{{ Storage::url($sellerProfile->shop_photo) }}"
-                                             alt="Shop Photo" class="img-thumbnail" style="max-height: 200px">
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" required>{{ old('description') ?? ($sellerProfile->description ?? '') }}</textarea>
+                    </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save Profile') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <button type="submit" class="save-btn">Save</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @vite(['resources/css/complete-profile.css'])
+@endpush
